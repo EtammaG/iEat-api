@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etammag.ieat.mapper.OrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.etammag.ieat.entity.OrderDetail">
+        <id column="id" property="id"/>
+        <result column="shopping_cart_id" property="shoppingCartId"/>
+        <result column="orders_id" property="ordersId"/>
+    </resultMap>
+
+    <insert id="insertAll">
+        insert into order_detail (id, orders_id, shopping_cart_id)
+        values
+        <foreach collection="orderDetails" item="item" separator=",">
+            (#{item.id}, #{item.ordersId}, #{item.shoppingCartId})
+        </foreach>
+    </insert>
+
+
+</mapper>

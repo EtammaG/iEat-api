@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.etammag.ieat.mapper.DishFlavorMapper">
+
+    <select id="selectAllFlavorByDishId" resultMap="com.etammag.ieat.mapper.FlavorMapper.BaseResultMap">
+        select flavor.id,
+               name,
+               value,
+               flavor.create_time,
+               flavor.update_time,
+               flavor.create_user,
+               flavor.update_user,
+               flavor.is_deleted + dish_flavor.is_deleted
+        from flavor,
+             dish_flavor
+        where dish_flavor.flavor_id = flavor.id
+          and dish_flavor.dish_id = #{dishId}
+    </select>
+
+    <select id="catByDishAndFlavorId" resultType="java.lang.Integer">
+        select 1
+        from dish_flavor
+        where dish_id = #{dishId}
+          and flavor_id = #{flavorId}
+        limit 1;
+    </select>
+
+    <insert id="insertOne">
+        insert into dish_flavor (dish_id, flavor_id, create_time, create_user)
+        values (#{dishId}, #{flavorId}, now(), #{userId})
+    </insert>
+
+    <insert id="insertAllFlavors">
+        insert into dish_flavor (dish_id, flavor_id, create_time, create_user)
+        values
+        <foreach collection="flavorIds" item="flavorId" separator=",">
+            (#{dishId}, #{flavorId}, now(), #{userId})
+        </foreach>
+    </insert>
+
+    <insert id="insertAllDishes">
+        insert into dish_flavor (dish_id, flavor_id, create_time, create_user)
+        values
+        <foreach collection="dishIds" item="dishId" separator=",">
+            (#{dishId}, #{flavorId}, now(), #{userId})
+        </foreach>
+    </insert>
+
+</mapper>

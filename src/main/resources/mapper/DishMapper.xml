@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etammag.ieat.mapper.DishMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.etammag.ieat.entity.Dish">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="price" property="price"/>
+        <result column="code" property="code"/>
+        <result column="image" property="image"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <resultMap id="DtoResultMap" type="com.etammag.ieat.entity.dto.DishDto">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="price" property="price"/>
+        <result column="code" property="code"/>
+        <result column="image" property="image"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="is_deleted" property="isDeleted"/>
+
+        <association property="flavors" column="id"
+                     select="com.etammag.ieat.mapper.FlavorMapper.selectAllByDishId"/>
+        <association property="categoryName" column="category_id"
+                     select="com.etammag.ieat.mapper.CategoryMapper.selectNameById"/>
+    </resultMap>
+
+    <select id="catByCategoryId" resultType="java.lang.Integer">
+        select 1
+        from dish
+        where category_id = #{categoryId}
+        limit 1
+    </select>
+
+    <select id="catById" resultType="java.lang.Integer">
+        select 1
+        from dish
+        where id = #{id}
+        limit 1
+    </select>
+
+    <insert id="insertAll">
+        insert into dish (id, name, category_id,
+                          price, code, image,
+                          description, create_time, update_time,
+                          create_user,update_user)
+        values
+        <foreach collection="dishes" separator="," item="item">
+            (#{item.id}, #{item.name},#{item.categoryId},
+            #{item.price}, #{item.code}, #{item.image},
+            #{item.description}, #{item.createTime},#{item.updateTime},
+             #{item.createUser}, #{item.updateUser})
+        </foreach>
+    </insert>
+
+</mapper>

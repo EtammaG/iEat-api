@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etammag.ieat.mapper.ShoppingCartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.etammag.ieat.entity.ShoppingCart">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="dish_id" property="dishId"/>
+        <result column="setmeal_id" property="setmealId"/>
+        <result column="dish_flavor" property="dishFlavor"/>
+        <result column="number" property="number"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectAllIdByUserId" resultType="java.lang.Long">
+        select id
+        from shopping_cart
+        where user_id = #{userId};
+    </select>
+
+</mapper>
